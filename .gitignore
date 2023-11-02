@@ -5,3 +5,7 @@ data/voting_behavior_V2_19492021.dta
 # previously used dataset files
 data/mp_characteristics_V2_19492021.dta
 data/vote_characteristics_V2_19492021.dta
+
+/venv
+.idea
+/env
