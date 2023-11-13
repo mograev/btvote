@@ -19,6 +19,7 @@ app = FastAPI()
 decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
 nearest_centroid = joblib.load('webapp/backend/models/nearest_centroid.joblib')
 options = {0: "no", 1: "yes"}
+party = {0: 'AfD', 1: 'CDU', 2: 'CSU', 3: 'FDP', 4: 'GRÜNE', 5: 'Linke', 6: 'SPD'}
 
 
 @app.get("/")
@@ -35,7 +36,7 @@ async def predict(body: PredictionRequest):
     for a, i in zip(answers, question_index):
         questions[0][i] = a
     prediction = decision_tree.predict(questions)[0]
-    return {"message": int(prediction)}
+    return {"message": party[prediction]}
 
 
 if __name__ == "__main__":
