@@ -18,6 +18,14 @@ class PredictionRequest(BaseModel):
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 #### Machine Learning
 #decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
 random_forest = joblib.load('webapp/backend/models/random_forest.joblib')
