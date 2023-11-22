@@ -7,28 +7,22 @@ import joblib
 import numpy as np
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import pickle
 
 
 
 ##### Pydantic models #####
 class PredictionRequest(BaseModel):
     type: list
-    index: list
 
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 #### Machine Learning
-decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
-nearest_centroid = joblib.load('webapp/backend/models/nearest_centroid.joblib')
+#decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
+random_forest = joblib.load('webapp/backend/models/random_forest.joblib')
+file = open('webapp/backend/models/classifier.pkl', 'rb')
+classifier = pickle.load(file)
 options = {0: "no", 1: "yes"}
 party = {0: 'AfD', 1: 'CDU', 2: 'CSU', 3: 'FDP', 4: 'GRÜNE', 5: 'Linke', 6: 'SPD'}
 
@@ -40,14 +34,11 @@ async def root():
 
 @app.post("/predict")
 async def predict(body: PredictionRequest):
-    questions = np.full(244, "no", dtype=object).reshape(1, -1)
     user_response = body.type
-    question_index = body.index
-    answers = [options[v] for v in user_response]
-    for a, i in zip(answers, question_index):
-        questions[0][i] = a
-    prediction = decision_tree.predict(questions)[0]
-    return {"prediction": party[prediction]}
+    user_response = np.array(user_response).reshape(1, -1)
+    prediction = classifier.predict_proba(user_response)
+    print(prediction)
+    return {"prediction": "hihi"}
 
 
 if __name__ == "__main__":
@@ -55,5 +46,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         reload=os.getenv("RELOAD", True),
-        port=int(os.getenv("PORT", 8080))
+        port=int(os.getenv("PORT", 8081))
     )

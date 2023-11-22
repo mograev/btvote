@@ -6,6 +6,5 @@ POST http://localhost:8080/predict
 Content-Type: application/json
 
 {
-  "type": [1,1,1,1,1,1,1,1,1,1],
-  "index": [39,170,26,139,164,1,5,148,231,230]
+  "type": [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0]
 }
