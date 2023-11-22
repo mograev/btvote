@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import numpy as np
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 ##### Pydantic models #####
@@ -14,6 +17,14 @@ class PredictionRequest(BaseModel):
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #### Machine Learning
 decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
@@ -36,7 +47,7 @@ async def predict(body: PredictionRequest):
     for a, i in zip(answers, question_index):
         questions[0][i] = a
     prediction = decision_tree.predict(questions)[0]
-    return {"message": party[prediction]}
+    return {"prediction": party[prediction]}
 
 
 if __name__ == "__main__":
