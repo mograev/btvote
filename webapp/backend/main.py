@@ -44,9 +44,8 @@ async def root():
 async def predict(body: PredictionRequest):
     user_response = body.type
     user_response = np.array(user_response).reshape(1, -1)
-    prediction = classifier.predict_proba(user_response)
-    print(prediction)
-    return {"prediction": "hihi"}
+    prediction = classifier.predict_proba(user_response)[0].tolist()
+    return {"prediction": prediction}
 
 
 if __name__ == "__main__":
