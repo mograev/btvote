@@ -27,8 +27,6 @@ app.add_middleware(
 )
 
 #### Machine Learning
-#decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
-random_forest = joblib.load('webapp/backend/models/random_forest.joblib')
 file = open('webapp/backend/models/classifier.pkl', 'rb')
 classifier = pickle.load(file)
 options = {0: "no", 1: "yes"}
