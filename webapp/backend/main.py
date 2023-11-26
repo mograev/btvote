@@ -50,9 +50,7 @@ async def predict(body: PredictionRequest):
     results[pred_class] += 1
     values = [value for key, value in results.items()]
     plt.bar(range(6), values)
-    #img_buf = io.BytesIO()
-    #plt.savefig(img_buf, format='png')
-    #plt.close()
+    plt.xticks(range(6), ["AFD", "CDU/CSU", "FDP", "GRÜNE", "LINKE", "SPD"])
     plt.savefig('./foo.png')
     plt.close()
     return {"prediction": prediction}
