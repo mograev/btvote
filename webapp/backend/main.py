@@ -27,10 +27,12 @@ app.add_middleware(
 )
 
 #### Machine Learning
-file = open('webapp/backend/models/classifier.pkl', 'rb')
+#decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
+#random_forest = joblib.load('webapp/backend/models/random_forest.joblib')
+file = open('./webapp/backend/models/classifier.pkl', 'rb')
 classifier = pickle.load(file)
 options = {0: "no", 1: "yes"}
-party = {0: 'AfD', 1: 'CDU', 2: 'CSU', 3: 'FDP', 4: 'GRÜNE', 5: 'Linke', 6: 'SPD'}
+party = {0: 'AfD', 1: 'CDU', 2: 'FDP', 3: 'GRÜNE', 4: 'Linke', 5: 'SPD'}
 
 
 @app.get("/")
