@@ -8,6 +8,9 @@ import numpy as np
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pickle
+import matplotlib.pyplot as plt
+import io
+
 
 
 
@@ -27,13 +30,11 @@ app.add_middleware(
 )
 
 #### Machine Learning
-#decision_tree = joblib.load('webapp/backend/models/decision_tree.joblib')
-#random_forest = joblib.load('webapp/backend/models/random_forest.joblib')
-file = open('./webapp/backend/models/classifier.pkl', 'rb')
+file = open('./models/classifier.pkl', 'rb')
 classifier = pickle.load(file)
 options = {0: "no", 1: "yes"}
 party = {0: 'AfD', 1: 'CDU', 2: 'FDP', 3: 'GRÜNE', 4: 'Linke', 5: 'SPD'}
-
+results = {i:0 for i in range(6)}
 
 @app.get("/")
 async def root():
@@ -45,6 +46,15 @@ async def predict(body: PredictionRequest):
     user_response = body.type
     user_response = np.array(user_response).reshape(1, -1)
     prediction = classifier.predict_proba(user_response)[0].tolist()
+    pred_class = classifier.predict(user_response)[0]
+    results[pred_class] += 1
+    values = [value for key, value in results.items()]
+    plt.bar(range(6), values)
+    #img_buf = io.BytesIO()
+    #plt.savefig(img_buf, format='png')
+    #plt.close()
+    plt.savefig('./foo.png')
+    plt.close()
     return {"prediction": prediction}
 
 
