@@ -73,5 +73,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         reload=os.getenv("RELOAD", True),
-        port=int(os.getenv("PORT", 8082))
+        port=int(os.getenv("PORT", 8081))
     )
